@@ -12,7 +12,6 @@ The original folder
 [GBC] 塞尔达传说-不可思议的果实 时空之章 [简].zip
 [GBC] 塞尔达传说-梦见岛DX [简].zip
 
-
 Runing
 
 unzip2here C:\Users\zhong\Desktop\roms
