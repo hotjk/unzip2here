@@ -20,6 +20,7 @@ import (
 
 var sema = make(chan struct{}, runtime.NumCPU())
 var done = make(chan string)
+
 var wg sync.WaitGroup
 var pinyinStyle = pinyin.NewArgs()
 var status = make(map[string]int)
@@ -62,7 +63,6 @@ func unzipFolder(dir string) {
 
 	for _, file := range files {
 		fullname := filepath.Join(dir, file.Name())
-		//fmt.Println(fullname)
 		if file.IsDir() {
 			unzipFolder(fullname)
 		} else {
@@ -108,9 +108,6 @@ func main() {
 	path := os.Args[1]
 	fmt.Println("unzip2here", path)
 
-	start := time.Now()
-	unzipFolder(path)
-
 	go func() {
 		for dir := range done {
 			status[dir]++
@@ -130,8 +127,12 @@ func main() {
 		}
 	}()
 
+	start := time.Now()
+	unzipFolder(path)
+
 	wg.Wait()
 	close(done)
+	close(sema)
 	ticker.Stop()
 	abort <- struct{}{}
 	writer.Stop()
